@@ -8,6 +8,8 @@ describe("Token Factory", function () {
         const tx = await tokenCt.createMemeToken("Test", "TEST", "img://img.png", "hello there", {
             value: hre.ethers.parseEther("0.0001")
         });
+        const memecoins = await tokenCt.getAllMemeTokens();
+        console.log("Memecoins ", memecoins)
     });
 
     it("Should revert if incorrect value of memeToken Creation fee is passed", async function () {
@@ -22,10 +24,11 @@ describe("Token Factory", function () {
         const tx1 = await tokenCt.createMemeToken("Test", "TEST", "img://img.png", "hello there", {
             value: hre.ethers.parseEther("0.0001")
         });
-        const memeToken = await tokenCt.memeTokens(0)
-        const memeTokenAddress = memeToken.tokenAddress;
+        const memeTokenAddress = await tokenCt.memeTokenAddresses(0)
         const tx2 = await tokenCt.buyMemeToken(memeTokenAddress, 800000, {
             value: hre.ethers.parseEther("40")
         });
+        const memecoins = await tokenCt.getAllMemeTokens();
+        console.log("Memecoins ", memecoins)
     })
 })

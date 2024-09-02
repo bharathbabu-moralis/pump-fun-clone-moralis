@@ -16,11 +16,11 @@ contract TokenFactory {
         string description;
         string tokenImageUrl;
         uint fundingRaised;
-        uint fundingDeadline;
         address tokenAddress;
+        address creatorAddress;
     }
 
-    memeToken[] public memeTokens;
+    address[] public memeTokenAddresses;
 
     mapping(address => memeToken) public addressToMemeTokenMapping;
 
@@ -79,11 +79,18 @@ contract TokenFactory {
         require(msg.value>= MEMETOKEN_CREATION_PLATFORM_FEE, "fee not paid for memetoken creation");
         Token ct = new Token(name, symbol, INIT_SUPPLY);
         address memeTokenAddress = address(ct);
-        uint fundingDeadline = block.timestamp + MEMECOIN_FUNDING_DEADLINE_DURATION;
-        memeToken memory newlyCreatedToken = memeToken(name, symbol, description, imageUrl, 0, fundingDeadline, memeTokenAddress);
-        memeTokens.push(newlyCreatedToken);
+        memeToken memory newlyCreatedToken = memeToken(name, symbol, description, imageUrl, 0, memeTokenAddress, msg.sender);
+        memeTokenAddresses.push(memeTokenAddress);
         addressToMemeTokenMapping[memeTokenAddress] = newlyCreatedToken;
         return memeTokenAddress;
+    }
+
+    function getAllMemeTokens() public view returns(memeToken[] memory) {
+        memeToken[] memory allTokens = new memeToken[](memeTokenAddresses.length);
+        for (uint i = 0; i < memeTokenAddresses.length; i++) {
+            allTokens[i] = addressToMemeTokenMapping[memeTokenAddresses[i]];
+        }
+        return allTokens;
     }
 
     function buyMemeToken(address memeTokenAddress, uint tokenQty) public payable returns(uint) {
@@ -92,9 +99,6 @@ contract TokenFactory {
         require(addressToMemeTokenMapping[memeTokenAddress].tokenAddress!=address(0), "Token is not listed");
         
         memeToken storage listedToken = addressToMemeTokenMapping[memeTokenAddress];
-
-        //check if funding deadline is not passed
-        require(block.timestamp <= listedToken.fundingDeadline, "Funding deadline has passed");
 
 
         Token memeTokenCt = Token(memeTokenAddress);

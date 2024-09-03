@@ -120,7 +120,7 @@ contract TokenFactory {
 
         require(tokenQty <= scaled_available_qty, "Not enough available supply");
 
-        // calculate the cost for purchasing tokenQty tokens as per the linear bonding curve formula
+        // calculate the cost for purchasing tokenQty tokens as per the exponential bonding curve formula
         uint currentSupplyScaled = (currentSupply - INIT_SUPPLY) / DECIMALS;
         uint requiredEth = calculateCost(currentSupplyScaled, tokenQty);
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
-import '../App.css'; // Importing the CSS file for styling
-import { abi } from './abi'; // Import ABI for contract interaction
-import { tokenAbi } from './tokenAbi'; // ABI for token contract
+import '../App.css'; 
+import { abi } from './abi'; 
+import { tokenAbi } from './tokenAbi';
 
 const TokenDetail = () => {
   const { tokenAddress } = useParams();
@@ -18,9 +18,8 @@ const TokenDetail = () => {
   const [purchaseAmount, setPurchaseAmount] = useState('');
   const [cost, setCost] = useState('0');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate(); 
 
-  // Ensure card data is available before destructuring
   const tokenDetails = card || {
     name: 'Unknown',
     symbol: 'Unknown',
@@ -30,17 +29,16 @@ const TokenDetail = () => {
     creatorAddress: '0x0000000000000000000000000000000000000000',
   };
 
-  // Extract funding raised and parse it as a float
   const fundingRaised = parseFloat(tokenDetails.fundingRaised.replace(' ETH', ''));
 
   // Constants
-  const fundingGoal = 24; // Funding goal in ETH
-  const maxSupply = parseInt(800000); // Max supply
+  const fundingGoal = 24; 
+  const maxSupply = parseInt(800000); 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch owner data
+       
         const ownersResponse = await fetch(
           `https://deep-index.moralis.io/api/v2.2/erc20/${tokenAddress}/owners?chain=sepolia&order=DESC`,
           {
@@ -53,7 +51,7 @@ const TokenDetail = () => {
         const ownersData = await ownersResponse.json();
         setOwners(ownersData.result || []);
 
-        // Fetch transfer data
+       
         const transfersResponse = await fetch(
           `https://deep-index.moralis.io/api/v2.2/erc20/${tokenAddress}/transfers?chain=sepolia&order=DESC`,
           {
@@ -115,11 +113,11 @@ const TokenDetail = () => {
 
       const transaction = await contract.buyMemeToken(tokenAddress, purchaseAmount,{
         value: ethers.parseUnits(cost, 'ether'),
-      }); // Replace with actual function
+      }); 
       const receipt = await transaction.wait();
 
       alert(`Transaction successful! Hash: ${receipt.hash}`);
-      setIsModalOpen(false); // Close the modal
+      setIsModalOpen(false); 
     } catch (error) {
       console.error('Error during purchase:', error);
     }
@@ -136,7 +134,7 @@ const TokenDetail = () => {
       <h3 className="start-new-coin" onClick={() => navigate('/')}>[go back]</h3>
 
       <div className="token-details-section">
-        {/* Left Column: Token Details */}
+
         <div className="token-details">
           <h2>Token Detail for {tokenDetails.name}</h2>
           <img src={tokenDetails.tokenImageUrl} alt={tokenDetails.name} className="token-detail-image" />
@@ -147,7 +145,6 @@ const TokenDetail = () => {
           <p><strong>Description:</strong> {tokenDetails.description}</p>
         </div>
 
-        {/* Right Column: Progress Bars and Buy Tokens */}
         <div className="right-column">
           <div className="progress-bars">
             <div className="progress-container">
@@ -166,7 +163,7 @@ const TokenDetail = () => {
             </div>
           </div>
 
-          {/* Buy Tokens Section */}
+       
           <div className="buy-tokens">
             <h3>Buy Tokens</h3>
             <input
@@ -181,7 +178,7 @@ const TokenDetail = () => {
         </div>
       </div>
 
-      {/* Modal for Confirming Purchase */}
+
       {isModalOpen && (
         <div className="modal">
           <div className="modal-content">
@@ -193,7 +190,7 @@ const TokenDetail = () => {
         </div>
       )}
 
-      {/* Tables Section */}
+
       <h3>Owners</h3>
       {loading ? (
         <p>Loading owners...</p>

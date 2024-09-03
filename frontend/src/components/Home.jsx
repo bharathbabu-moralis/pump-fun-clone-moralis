@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import '../App.css'; // Importing the CSS file for styling
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for routing
+import '../App.css'; 
+import { useNavigate } from 'react-router-dom'; 
 const { ethers } = require('ethers');
 const {abi} = require("./abi")
 
@@ -8,22 +8,19 @@ const App = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchMemeTokens = async () => {
       try {
-        // Set up Ethereum provider and signer (using MetaMask in this example)
+      
         const provider = new ethers.JsonRpcProvider(process.env.REACT_APP_RPC_URL)
 
-        // Create a new contract instance
         console.log(provider)
         const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ADDRESS, abi, provider);
 
-        // Call the getAllMemeTokens function from the contract
         const memeTokens = await contract.getAllMemeTokens();
 
-        // Process and set the fetched data
         setCards(
           memeTokens.map(token => ({
             name: token.name,
@@ -46,11 +43,9 @@ const App = () => {
   }, []);
 
   const handleSearch = () => {
-    // Implement search logic here
     console.log('Searching for:', searchTerm);
   };
 
-  // Function to navigate to a new page with token details
   const navigateToTokenDetail = (card) => {
     navigate(`/token-detail/${card.tokenAddress}`, { state: { card } }); // Use tokenAddress for URL
   };
@@ -66,7 +61,7 @@ const App = () => {
         <h3 className="start-new-coin" onClick={() => navigate('/token-create')}>[start a new coin]</h3>
         <img src="https://pump.fun/_next/image?url=%2Fking-of-the-hill.png&w=256&q=75" alt="Start a new coin" className="start-new-image"/>
         
-        {/* Main Card - First value of the array */}
+      
         {cards.length > 0 && (
           <div className="card main-card" onClick={() => navigateToTokenDetail(cards[0])}>
             <div className="card-content">
@@ -97,7 +92,7 @@ const App = () => {
           <p>Loading...</p>
         ) : (
           <div className="card-list">
-            {/* Render cards from the 2nd value onward */}
+    
             {cards.slice(1).map((card, index) => (
               <div key={index} className="card" onClick={() => navigateToTokenDetail(card)}>
                 <div className="card-content">

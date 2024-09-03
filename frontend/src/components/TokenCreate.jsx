@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import '../App.css'; // Import the same CSS file for consistent styling
+import '../App.css'; 
 import { useNavigate } from 'react-router-dom';
-import { abi } from './abi'; // Import ABI for contract interaction
+import { abi } from './abi'; 
 import { ethers } from 'ethers';
 
 const TokenCreate = () => {
@@ -12,7 +12,6 @@ const TokenCreate = () => {
   const navigate = useNavigate();
 
   const handleCreate = async () => {
-    // Add logic to handle token creation here
     const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       console.log(signer)
@@ -20,13 +19,12 @@ const TokenCreate = () => {
 
       const transaction = await contract.createMemeToken(name, ticker, imageUrl, description,{
         value: ethers.parseUnits("0.0001", 'ether'),
-      }); // Replace with actual function
+      }); 
       const receipt = await transaction.wait();
 
       alert(`Transaction successful! Hash: ${receipt.hash}`);
-    // Redirect or notify the user after creation
     console.log('Creating token:', { name, ticker, description, imageUrl });
-    navigate('/'); // Redirect to home or any other page
+    navigate('/'); 
   };
 
   return (

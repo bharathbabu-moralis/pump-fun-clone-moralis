@@ -1,14 +1,23 @@
 {
   "name": "pump-fun",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Smart contracts for a pump.fun-style memecoin launchpad with an exponential bonding curve and Uniswap V2 graduation",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "node": "hardhat node",
+    "deploy:sepolia": "hardhat ignition deploy ./ignition/modules/TokenFactory.js --network sepolia"
   },
-  "keywords": [],
+  "keywords": [
+    "solidity",
+    "hardhat",
+    "erc20",
+    "bonding-curve",
+    "uniswap",
+    "memecoin"
+  ],
   "author": "",
-  "license": "ISC",
-  "description": "",
+  "license": "MIT",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "hardhat": "^2.22.9"
